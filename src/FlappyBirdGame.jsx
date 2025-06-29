@@ -7,6 +7,8 @@ const GRAVITY = 0.8;
 const JUMP = -11;
 const TUBE_SPEED = 4;
 
+/ / Tube dimensions
+
 function getRandomTubeY() {
   return Math.floor(Math.random() * (GAME_HEIGHT - 160 - 100)) + 50;
 }
