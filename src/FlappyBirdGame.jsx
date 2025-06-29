@@ -142,6 +142,7 @@ export default function FlappyBirdGame() {
         boxShadow: "0 2px 16px #aaa"
       }}
       onKeyDown={e => e.code === "Space" && handleJump()}
+      onClick={handleJump}
     >
       {/* Highscore bar */}
       <div
