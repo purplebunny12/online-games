@@ -3,14 +3,14 @@ import React, { useRef, useEffect, useState } from "react";
 const GAME_WIDTH = 400;
 const GAME_HEIGHT = 600;
 const BIRD_SIZE = 54; // slightly smaller than before
-const GRAVITY = 0.8; // increased from 0.6
-const JUMP = -11; // increased jump to match speed
-const TUBE_WIDTH = 60;
-const TUBE_GAP = 160;
-const TUBE_SPEED = 4; // increased from 3
+const DIFFICULTY_CONFIG = {
+  Easy:   { GRAVITY: 0.6, JUMP: -9, TUBE_SPEED: 3 },
+  Normal: { GRAVITY: 0.8, JUMP: -11, TUBE_SPEED: 4 },
+  Hard:   { GRAVITY: 1.1, JUMP: -13, TUBE_SPEED: 5 }
+};
 
 function getRandomTubeY() {
-  return Math.floor(Math.random() * (GAME_HEIGHT - TUBE_GAP - 100)) + 50;
+  return Math.floor(Math.random() * (GAME_HEIGHT - 160 - 100)) + 50;
 }
 
 function BlueBird() {
@@ -46,7 +46,9 @@ export default function FlappyBirdGame() {
     return Number(localStorage.getItem('flappyHighScore') || 0);
   });
   const [started, setStarted] = useState(false);
+  const [difficulty, setDifficulty] = useState('Normal');
   const requestRef = useRef();
+  const { GRAVITY, JUMP, TUBE_SPEED } = DIFFICULTY_CONFIG[difficulty];
 
   useEffect(() => {
     if (gameOver && score > highScore) {
@@ -112,6 +114,19 @@ export default function FlappyBirdGame() {
     return () => cancelAnimationFrame(requestRef.current);
   }, [velocity, birdY, gameOver, started]);
 
+  useEffect(() => {
+    // Reset game when difficulty changes
+    setBirdY(GAME_HEIGHT / 2);
+    setVelocity(0);
+    setTubes([
+      { x: GAME_WIDTH + 100, y: getRandomTubeY(), scored: false },
+      { x: GAME_WIDTH + 300, y: getRandomTubeY(), scored: false }
+    ]);
+    setScore(0);
+    setGameOver(false);
+    setStarted(false);
+  }, [difficulty]);
+
   const handleStart = () => {
     if (!started) {
       setStarted(true);
@@ -158,6 +173,38 @@ export default function FlappyBirdGame() {
       onKeyDown={e => e.code === "Space" && handleJump()}
       onClick={handleJump}
     >
+      {/* Difficulty Buttons */}
+      <div style={{
+        position: 'absolute',
+        left: -120,
+        top: 60,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 12,
+        zIndex: 10
+      }}>
+        {['Easy', 'Normal', 'Hard'].map(level => (
+          <button
+            key={level}
+            onClick={e => { e.stopPropagation(); setDifficulty(level); }}
+            style={{
+              padding: '10px 24px',
+              fontSize: 18,
+              fontWeight: 700,
+              background: difficulty === level ? '#2196f3' : '#fff',
+              color: difficulty === level ? '#fff' : '#1565c0',
+              border: '2px solid #2196f3',
+              borderRadius: 8,
+              boxShadow: difficulty === level ? '0 2px 8px #bbb' : 'none',
+              cursor: 'pointer',
+              outline: 'none',
+              transition: 'all 0.2s',
+            }}
+          >
+            {level}
+          </button>
+        ))}
+      </div>
       {/* Highscore bar */}
       <div
         style={{
