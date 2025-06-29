@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 
 const GAME_WIDTH = 400;
 const GAME_HEIGHT = 600;
-const BIRD_SIZE = 48; // slightly smaller than before
+const BIRD_SIZE = 54; // slightly smaller than before
 const GRAVITY = 0.5;
 const JUMP = -8;
 const TUBE_WIDTH = 60;
