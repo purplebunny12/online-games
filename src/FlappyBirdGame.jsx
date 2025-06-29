@@ -64,11 +64,16 @@ export default function FlappyBirdGame() {
           newTubes.push({ x: GAME_WIDTH, y: getRandomTubeY() });
           setScore(s => s + 1);
         }
-        // Collision detection
+        // Improved collision detection: only lose if more than 1px overlaps
         newTubes.forEach(tube => {
+          const birdLeft = 60;
+          const birdRight = 60 + BIRD_SIZE;
+          const tubeLeft = tube.x;
+          const tubeRight = tube.x + TUBE_WIDTH;
+          // Calculate horizontal overlap
+          const overlap = Math.max(0, Math.min(birdRight, tubeRight) - Math.max(birdLeft, tubeLeft));
           if (
-            tube.x < 60 + BIRD_SIZE &&
-            tube.x + TUBE_WIDTH > 60 &&
+            overlap > 1 && // Only lose if more than 1px overlaps
             (birdY < tube.y || birdY + BIRD_SIZE > tube.y + TUBE_GAP)
           ) {
             setGameOver(true);
