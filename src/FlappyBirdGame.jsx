@@ -42,7 +42,17 @@ export default function FlappyBirdGame() {
   ]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [highScore, setHighScore] = useState(() => {
+    return Number(localStorage.getItem('flappyHighScore') || 0);
+  });
   const requestRef = useRef();
+
+  useEffect(() => {
+    if (gameOver && score > highScore) {
+      setHighScore(score);
+      localStorage.setItem('flappyHighScore', score);
+    }
+  }, [gameOver, score, highScore]);
 
   useEffect(() => {
     if (gameOver) return;
@@ -119,6 +129,24 @@ export default function FlappyBirdGame() {
       onClick={handleJump}
       onKeyDown={e => e.code === "Space" && handleJump()}
     >
+      {/* Highscore bar */}
+      <div
+        style={{
+          position: "absolute",
+          top: 16,
+          right: 24,
+          background: "#fff",
+          color: "#1565c0",
+          fontWeight: 700,
+          fontSize: 20,
+          padding: "6px 18px",
+          borderRadius: 8,
+          boxShadow: "0 2px 8px #eee",
+          zIndex: 2
+        }}
+      >
+        Highscore: {highScore}
+      </div>
       {/* Bird */}
       <div
         style={{
