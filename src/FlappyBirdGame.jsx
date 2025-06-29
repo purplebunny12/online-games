@@ -182,38 +182,40 @@ export default function FlappyBirdGame() {
       onKeyDown={e => e.code === "Space" && handleJump()}
       onClick={handleJump}
     >
-      {/* Difficulty Bar */}
-      <div style={{
-        position: 'absolute',
-        left: -120,
-        top: 60,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 12,
-        zIndex: 10
-      }}>
-        {['Easy', 'Normal', 'Hard'].map(level => (
-          <button
-            key={level}
-            onClick={e => { e.stopPropagation(); setDifficulty(level); }}
-            style={{
-              padding: '10px 24px',
-              fontSize: 18,
-              fontWeight: 700,
-              background: difficulty === level ? '#2196f3' : '#fff',
-              color: difficulty === level ? '#fff' : '#1565c0',
-              border: '2px solid #2196f3',
-              borderRadius: 8,
-              boxShadow: difficulty === level ? '0 2px 8px #bbb' : 'none',
-              cursor: 'pointer',
-              outline: 'none',
-              transition: 'all 0.2s',
-            }}
-          >
-            {level}
-          </button>
-        ))}
-      </div>
+      {/* Difficulty Bar: Only show before game starts */}
+      {!started && !gameOver && (
+        <div style={{
+          position: 'absolute',
+          left: -120,
+          top: 60,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 12,
+          zIndex: 10
+        }}>
+          {['Easy', 'Normal', 'Hard'].map(level => (
+            <button
+              key={level}
+              onClick={e => { e.stopPropagation(); setDifficulty(level); }}
+              style={{
+                padding: '10px 24px',
+                fontSize: 18,
+                fontWeight: 700,
+                background: difficulty === level ? '#2196f3' : '#fff',
+                color: difficulty === level ? '#fff' : '#1565c0',
+                border: '2px solid #2196f3',
+                borderRadius: 8,
+                boxShadow: difficulty === level ? '0 2px 8px #bbb' : 'none',
+                cursor: 'pointer',
+                outline: 'none',
+                transition: 'all 0.2s',
+              }}
+            >
+              {level}
+            </button>
+          ))}
+        </div>
+      )}
       {/* Highscore bar */}
       <div
         style={{
