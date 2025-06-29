@@ -37,8 +37,8 @@ export default function FlappyBirdGame() {
   const [birdY, setBirdY] = useState(GAME_HEIGHT / 2);
   const [velocity, setVelocity] = useState(0);
   const [tubes, setTubes] = useState([
-    { x: GAME_WIDTH + 100, y: getRandomTubeY() },
-    { x: GAME_WIDTH + 300, y: getRandomTubeY() }
+    { x: GAME_WIDTH + 100, y: getRandomTubeY(), scored: false },
+    { x: GAME_WIDTH + 300, y: getRandomTubeY(), scored: false }
   ]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
@@ -71,10 +71,20 @@ export default function FlappyBirdGame() {
       setVelocity(v => v + GRAVITY);
       setTubes(prevTubes => {
         let newTubes = prevTubes.map(tube => ({ ...tube, x: tube.x - TUBE_SPEED }));
+        // Score update: as soon as bird passes tube's right edge
+        newTubes = newTubes.map(tube => {
+          const birdLeft = 60;
+          const birdRight = 60 + BIRD_SIZE;
+          const tubeRight = tube.x + TUBE_WIDTH;
+          if (!tube.scored && birdLeft > tubeRight) {
+            setScore(s => s + 1);
+            return { ...tube, scored: true };
+          }
+          return tube;
+        });
         if (newTubes[0].x < -TUBE_WIDTH) {
           newTubes.shift();
-          newTubes.push({ x: GAME_WIDTH, y: getRandomTubeY() });
-          setScore(s => s + 1);
+          newTubes.push({ x: GAME_WIDTH, y: getRandomTubeY(), scored: false });
         }
         // Improved collision detection: only lose if the bird fully touches the edge of the pipe
         newTubes.forEach(tube => {
@@ -117,8 +127,8 @@ export default function FlappyBirdGame() {
       setBirdY(GAME_HEIGHT / 2);
       setVelocity(0);
       setTubes([
-        { x: GAME_WIDTH + 100, y: getRandomTubeY() },
-        { x: GAME_WIDTH + 300, y: getRandomTubeY() }
+        { x: GAME_WIDTH + 100, y: getRandomTubeY(), scored: false },
+        { x: GAME_WIDTH + 300, y: getRandomTubeY(), scored: false }
       ]);
       setScore(0);
       setGameOver(false);
