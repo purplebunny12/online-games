@@ -82,10 +82,11 @@ export default function FlappyBirdGame() {
           const birdRight = 60 + BIRD_SIZE;
           const tubeLeft = tube.x;
           const tubeRight = tube.x + TUBE_WIDTH;
-          // Collision detection: lose if the bird touches the tube at all
-          const overlap = Math.max(0, Math.min(birdRight, tubeRight) - Math.max(birdLeft, tubeLeft));
+          // Collision detection: lose only if the bird is touching the border of the tube
+          const touchingLeft = Math.abs(birdRight - tubeLeft) < 1;
+          const touchingRight = Math.abs(birdLeft - tubeRight) < 1;
           if (
-            overlap > 0 &&
+            (touchingLeft || touchingRight) &&
             (birdY < tube.y || birdY + BIRD_SIZE > tube.y + TUBE_GAP)
           ) {
             setGameOver(true);
