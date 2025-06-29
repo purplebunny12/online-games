@@ -54,7 +54,7 @@ export default function FlappyBirdGame() {
     return Number(localStorage.getItem('flappyHighScore') || 0);
   });
   const [started, setStarted] = useState(false);
-  const [difficulty, setDifficulty] = useState('Hard');
+  const [difficulty, setDifficulty] = useState('Easy');
   const requestRef = useRef();
 
   const { GRAVITY, JUMP, TUBE_SPEED } = DIFFICULTY_CONFIG[difficulty];
