@@ -3,11 +3,11 @@ import React, { useRef, useEffect, useState } from "react";
 const GAME_WIDTH = 400;
 const GAME_HEIGHT = 600;
 const BIRD_SIZE = 54; // slightly smaller than before
-const GRAVITY = 0.6; // increased from 0.5
-const JUMP = -9; // increased jump to match speed
+const GRAVITY = 0.8; // increased from 0.6
+const JUMP = -11; // increased jump to match speed
 const TUBE_WIDTH = 60;
 const TUBE_GAP = 160;
-const TUBE_SPEED = 3; // increased from 2
+const TUBE_SPEED = 4; // increased from 3
 
 function getRandomTubeY() {
   return Math.floor(Math.random() * (GAME_HEIGHT - TUBE_GAP - 100)) + 50;
