@@ -86,19 +86,21 @@ export default function FlappyBirdGame() {
           newTubes.shift();
           newTubes.push({ x: GAME_WIDTH, y: getRandomTubeY(), scored: false });
         }
-        // Improved collision detection: only lose if the bird fully touches the edge of the pipe
+        // Collision detection: lose if the bird touches the tube at all
         newTubes.forEach(tube => {
           const birdLeft = 60;
           const birdRight = 60 + BIRD_SIZE;
+          const birdTop = birdY;
+          const birdBottom = birdY + BIRD_SIZE;
           const tubeLeft = tube.x;
           const tubeRight = tube.x + TUBE_WIDTH;
-          // Collision detection: lose only if the bird is touching the border of the tube
-          const touchingLeft = Math.abs(birdRight - tubeLeft) < 1;
-          const touchingRight = Math.abs(birdLeft - tubeRight) < 1;
-          if (
-            (touchingLeft || touchingRight) &&
-            (birdY < tube.y || birdY + BIRD_SIZE > tube.y + TUBE_GAP)
-          ) {
+          // Check horizontal overlap
+          const horizontalOverlap = birdRight > tubeLeft && birdLeft < tubeRight;
+          // Check vertical overlap with top tube
+          const topTubeOverlap = birdTop < tube.y;
+          // Check vertical overlap with bottom tube
+          const bottomTubeOverlap = birdBottom > tube.y + TUBE_GAP;
+          if (horizontalOverlap && (topTubeOverlap || bottomTubeOverlap)) {
             setGameOver(true);
           }
         });
