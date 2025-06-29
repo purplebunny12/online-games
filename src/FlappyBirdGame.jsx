@@ -97,7 +97,7 @@ export default function FlappyBirdGame() {
           newTubes.shift();
           newTubes.push({ x: GAME_WIDTH, y: getRandomTubeY(), scored: false });
         }
-        // Collision detection: lose only if the bird touches any border of the tube
+        // Collision detection: lose if the bird touches the top or bottom of the tube
         newTubes.forEach(tube => {
           const birdLeft = 60;
           const birdRight = 60 + BIRD_SIZE;
@@ -105,23 +105,13 @@ export default function FlappyBirdGame() {
           const birdBottom = birdY + BIRD_SIZE;
           const tubeLeft = tube.x;
           const tubeRight = tube.x + TUBE_WIDTH;
-          // Borders: left, right, top (of bottom tube), bottom (of top tube)
-          // Check if bird is at the left or right border of a tube
-          const touchingLeft = Math.abs(birdRight - tubeLeft) < 1;
-          const touchingRight = Math.abs(birdLeft - tubeRight) < 1;
-          // Check if bird is at the bottom border of the top tube
-          const touchingTopTubeBottom =
-            birdBottom >= tube.y - 1 && birdBottom <= tube.y + 3 &&
-            birdRight > tubeLeft && birdLeft < tubeRight && birdTop < tube.y;
-          // Check if bird is at the top border of the bottom tube
-          const touchingBottomTubeTop =
-            birdTop <= tube.y + TUBE_GAP + 1 && birdTop >= tube.y + TUBE_GAP - 3 &&
-            birdRight > tubeLeft && birdLeft < tubeRight && birdBottom > tube.y + TUBE_GAP;
-          if (
-            ((touchingLeft || touchingRight) && (birdTop < tube.y || birdBottom > tube.y + TUBE_GAP)) ||
-            touchingTopTubeBottom ||
-            touchingBottomTubeTop
-          ) {
+          // Check horizontal overlap
+          const horizontalOverlap = birdRight > tubeLeft && birdLeft < tubeRight;
+          // Check if bird touches the bottom of the top tube
+          const touchesTopTube = horizontalOverlap && birdTop < tube.y;
+          // Check if bird touches the top of the bottom tube
+          const touchesBottomTube = horizontalOverlap && birdBottom > tube.y + TUBE_GAP;
+          if (touchesTopTube || touchesBottomTube) {
             setGameOver(true);
           }
         });
