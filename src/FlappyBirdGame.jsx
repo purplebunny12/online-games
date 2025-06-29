@@ -141,8 +141,7 @@ export default function FlappyBirdGame() {
         borderRadius: 12,
         boxShadow: "0 2px 16px #aaa"
       }}
-      onClick={handleStart}
-      onKeyDown={e => e.code === "Space" && handleStart()}
+      onKeyDown={e => e.code === "Space" && handleJump()}
     >
       {/* Highscore bar */}
       <div
@@ -220,8 +219,31 @@ export default function FlappyBirdGame() {
           textShadow: "0 2px 8px #fff"
         }}
       >
-        {gameOver ? "Game Over! " : started ? `Score: ${score}` : "Press Space or Click to Start"}
+        {gameOver ? "Game Over! " : started ? `Score: ${score}` : null}
       </div>
+      {!started && !gameOver && (
+        <button
+          onClick={handleJump}
+          style={{
+            position: "absolute",
+            top: "45%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            padding: "16px 40px",
+            fontSize: 24,
+            fontWeight: 700,
+            background: "#2196f3",
+            color: "#fff",
+            border: "none",
+            borderRadius: 10,
+            boxShadow: "0 2px 8px #bbb",
+            cursor: "pointer",
+            zIndex: 10
+          }}
+        >
+          Start
+        </button>
+      )}
       {gameOver && (
         <div
           style={{
