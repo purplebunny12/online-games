@@ -122,8 +122,9 @@ export default function FlappyBirdGame() {
 
   const handleJump = () => {
     if (!started) {
-      handleStart();
-      return;
+      setStarted(true);
+      setVelocity(JUMP);
+      return; // Remove this return to allow jump on first press
     }
     if (gameOver) {
       setBirdY(GAME_HEIGHT / 2);
