@@ -16,12 +16,19 @@ function getRandomTubeY() {
 function BlueBird() {
   return (
     <svg width="32" height="32" viewBox="0 0 32 32">
-      <ellipse cx="16" cy="18" rx="13" ry="10" fill="#2196f3" stroke="#1565c0" strokeWidth="2" />
-      <ellipse cx="24" cy="14" rx="4" ry="3" fill="#2196f3" stroke="#1565c0" strokeWidth="1.5" />
-      <ellipse cx="10" cy="10" rx="3" ry="2.5" fill="#2196f3" stroke="#1565c0" strokeWidth="1.5" />
-      <circle cx="21" cy="19" r="2.2" fill="#fff" />
-      <circle cx="21.7" cy="19" r="1.1" fill="#222" />
-      <polygon points="29,18 27,17 27,19" fill="#ffb300" />
+      {/* Body (oval) */}
+      <ellipse cx="18" cy="20" rx="10" ry="7" fill="#2196f3" stroke="#1565c0" strokeWidth="2" />
+      {/* Tail */}
+      <polygon points="7,20 2,17 7,23" fill="#1976d2" />
+      {/* Wing */}
+      <ellipse cx="18" cy="22" rx="5" ry="2.5" fill="#64b5f6" stroke="#1565c0" strokeWidth="1" />
+      {/* Head (smaller oval) */}
+      <ellipse cx="25" cy="15" rx="5" ry="4" fill="#2196f3" stroke="#1565c0" strokeWidth="1.5" />
+      {/* Beak */}
+      <polygon points="31,15 27,14 27,16" fill="#ffb300" />
+      {/* Eye */}
+      <circle cx="27" cy="15" r="1.1" fill="#fff" />
+      <circle cx="27.5" cy="15" r="0.5" fill="#222" />
     </svg>
   );
 }
