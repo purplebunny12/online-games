@@ -133,7 +133,7 @@ export default function FlappyBirdGame() {
       <div
         style={{
           position: "absolute",
-          top: 16,
+          bottom: 24,
           right: 24,
           background: "#fff",
           color: "#1565c0",
