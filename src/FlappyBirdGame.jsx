@@ -45,6 +45,7 @@ export default function FlappyBirdGame() {
   const [highScore, setHighScore] = useState(() => {
     return Number(localStorage.getItem('flappyHighScore') || 0);
   });
+  const [started, setStarted] = useState(false);
   const requestRef = useRef();
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function FlappyBirdGame() {
   }, [gameOver, score, highScore]);
 
   useEffect(() => {
+    if (!started) return;
     if (gameOver) return;
     const animate = () => {
       setBirdY(prev => {
@@ -95,9 +97,21 @@ export default function FlappyBirdGame() {
     };
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
-  }, [velocity, birdY, gameOver]);
+  }, [velocity, birdY, gameOver, started]);
+
+  const handleStart = () => {
+    if (!started) {
+      setStarted(true);
+      setVelocity(JUMP);
+      return;
+    }
+  };
 
   const handleJump = () => {
+    if (!started) {
+      handleStart();
+      return;
+    }
     if (gameOver) {
       setBirdY(GAME_HEIGHT / 2);
       setVelocity(0);
@@ -107,6 +121,7 @@ export default function FlappyBirdGame() {
       ]);
       setScore(0);
       setGameOver(false);
+      setStarted(false);
     } else {
       setVelocity(JUMP);
     }
@@ -126,8 +141,8 @@ export default function FlappyBirdGame() {
         borderRadius: 12,
         boxShadow: "0 2px 16px #aaa"
       }}
-      onClick={handleJump}
-      onKeyDown={e => e.code === "Space" && handleJump()}
+      onClick={handleStart}
+      onKeyDown={e => e.code === "Space" && handleStart()}
     >
       {/* Highscore bar */}
       <div
@@ -205,7 +220,7 @@ export default function FlappyBirdGame() {
           textShadow: "0 2px 8px #fff"
         }}
       >
-        {gameOver ? "Game Over! " : "Score: "}{score}
+        {gameOver ? "Game Over! " : started ? `Score: ${score}` : "Press Space or Click to Start"}
       </div>
       {gameOver && (
         <div
