@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 
 const GAME_WIDTH = 400;
 const GAME_HEIGHT = 600;
-const BIRD_SIZE = 64; // doubled from 32
+const BIRD_SIZE = 48; // slightly smaller than before
 const GRAVITY = 0.5;
 const JUMP = -8;
 const TUBE_WIDTH = 60;
@@ -15,7 +15,7 @@ function getRandomTubeY() {
 
 function BlueBird() {
   return (
-    <svg width="64" height="64" viewBox="0 0 32 32" style={{ transform: 'scale(2)' }}>
+    <svg width="48" height="48" viewBox="0 0 32 32">
       {/* Body (oval) */}
       <ellipse cx="18" cy="20" rx="10" ry="7" fill="#2196f3" stroke="#1565c0" strokeWidth="2" />
       {/* Tail */}
