@@ -165,6 +165,9 @@ export default function FlappyBirdGame() {
     }
   };
 
+  // Show difficulty bar before every game (including after game over)
+  const showDifficultyBar = !started;
+
   return (
     <div
       tabIndex={0}
@@ -182,40 +185,6 @@ export default function FlappyBirdGame() {
       onKeyDown={e => e.code === "Space" && handleJump()}
       onClick={handleJump}
     >
-      {/* Difficulty Bar: Only show before game starts */}
-      {!started && !gameOver && (
-        <div style={{
-          position: 'absolute',
-          left: -120,
-          top: 60,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 12,
-          zIndex: 10
-        }}>
-          {['Easy', 'Normal', 'Hard'].map(level => (
-            <button
-              key={level}
-              onClick={e => { e.stopPropagation(); setDifficulty(level); }}
-              style={{
-                padding: '10px 24px',
-                fontSize: 18,
-                fontWeight: 700,
-                background: difficulty === level ? '#2196f3' : '#fff',
-                color: difficulty === level ? '#fff' : '#1565c0',
-                border: '2px solid #2196f3',
-                borderRadius: 8,
-                boxShadow: difficulty === level ? '0 2px 8px #bbb' : 'none',
-                cursor: 'pointer',
-                outline: 'none',
-                transition: 'all 0.2s',
-              }}
-            >
-              {level}
-            </button>
-          ))}
-        </div>
-      )}
       {/* Highscore bar */}
       <div
         style={{
@@ -294,29 +263,65 @@ export default function FlappyBirdGame() {
       >
         {gameOver ? "Game Over! " : started ? `Score: ${score}` : null}
       </div>
-      {!started && !gameOver && (
-        <button
-          onClick={handleJump}
-          style={{
-            position: "absolute",
-            top: "45%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            padding: "16px 40px",
-            fontSize: 24,
-            fontWeight: 700,
-            background: "#2196f3",
-            color: "#fff",
-            border: "none",
-            borderRadius: 10,
-            boxShadow: "0 2px 8px #bbb",
-            cursor: "pointer",
+      {showDifficultyBar && (
+        <>
+          <button
+            onClick={handleJump}
+            style={{
+              position: "absolute",
+              top: "45%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              padding: "16px 40px",
+              fontSize: 24,
+              fontWeight: 700,
+              background: "#2196f3",
+              color: "#fff",
+              border: "none",
+              borderRadius: 10,
+              boxShadow: "0 2px 8px #bbb",
+              cursor: "pointer",
+              zIndex: 10
+            }}
+          >
+            Start
+          </button>
+          {/* Difficulty Bar below Start button */}
+          <div style={{
+            position: 'absolute',
+            top: 'calc(45% + 70px)',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 16,
             zIndex: 10
-          }}
-        >
-          Start
-        </button>
+          }}>
+            {['Easy', 'Normal', 'Hard'].map(level => (
+              <button
+                key={level}
+                onClick={e => { e.stopPropagation(); setDifficulty(level); }}
+                style={{
+                  padding: '10px 24px',
+                  fontSize: 18,
+                  fontWeight: 700,
+                  background: difficulty === level ? '#2196f3' : '#fff',
+                  color: difficulty === level ? '#fff' : '#1565c0',
+                  border: '2px solid #2196f3',
+                  borderRadius: 8,
+                  boxShadow: difficulty === level ? '0 2px 8px #bbb' : 'none',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  transition: 'all 0.2s',
+                }}
+              >
+                {level}
+              </button>
+            ))}
+          </div>
+        </>
       )}
+      {/* Game Over message */}
       {gameOver && (
         <div
           style={{
