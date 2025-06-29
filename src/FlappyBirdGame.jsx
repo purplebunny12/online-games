@@ -12,9 +12,9 @@ const TUBE_WIDTH = 52;
 const TUBE_GAP = 160; // Gap between top and bottom tubes
 
 const DIFFICULTY_CONFIG = {
-  Easy:   { GRAVITY: 0.6, JUMP: -9, TUBE_SPEED: 3 },
-  Normal: { GRAVITY: 0.8, JUMP: -11, TUBE_SPEED: 4 },
-  Hard:   { GRAVITY: 1.1, JUMP: -13, TUBE_SPEED: 5 }
+  Easy:   { GRAVITY: 0.5, JUMP: -7, TUBE_SPEED: 2 },
+  Normal: { GRAVITY: 0.65, JUMP: -9, TUBE_SPEED: 3 },
+  Hard:   { GRAVITY: 0.85, JUMP: -11, TUBE_SPEED: 3.7 }
 };
 
 function getRandomTubeY() {
