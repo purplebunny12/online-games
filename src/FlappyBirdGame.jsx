@@ -50,9 +50,16 @@ export default function FlappyBirdGame() {
   ]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  // Use a different highscore for each difficulty
   const [highScore, setHighScore] = useState(() => {
-    return Number(localStorage.getItem('flappyHighScore') || 0);
+    const key = `flappyHighScore_${difficulty}`;
+    return Number(localStorage.getItem(key) || 0);
   });
+  // Update highscore when difficulty changes
+  useEffect(() => {
+    const key = `flappyHighScore_${difficulty}`;
+    setHighScore(Number(localStorage.getItem(key) || 0));
+  }, [difficulty]);
   const [started, setStarted] = useState(false);
   const [difficulty, setDifficulty] = useState('Easy');
   const requestRef = useRef();
@@ -62,9 +69,10 @@ export default function FlappyBirdGame() {
   useEffect(() => {
     if (gameOver && score > highScore) {
       setHighScore(score);
-      localStorage.setItem('flappyHighScore', score);
+      const key = `flappyHighScore_${difficulty}`;
+      localStorage.setItem(key, score);
     }
-  }, [gameOver, score, highScore]);
+  }, [gameOver, score, highScore, difficulty]);
 
   useEffect(() => {
     if (!started) return;
@@ -201,7 +209,7 @@ export default function FlappyBirdGame() {
           zIndex: 2
         }}
       >
-        Highscore: {highScore}
+        Highscore ({difficulty}): {highScore}
       </div>
       {/* Bird */}
       <div
