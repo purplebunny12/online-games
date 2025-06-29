@@ -13,6 +13,19 @@ function getRandomTubeY() {
   return Math.floor(Math.random() * (GAME_HEIGHT - TUBE_GAP - 100)) + 50;
 }
 
+function BlueBird() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32">
+      <ellipse cx="16" cy="18" rx="13" ry="10" fill="#2196f3" stroke="#1565c0" strokeWidth="2" />
+      <ellipse cx="24" cy="14" rx="4" ry="3" fill="#2196f3" stroke="#1565c0" strokeWidth="1.5" />
+      <ellipse cx="10" cy="10" rx="3" ry="2.5" fill="#2196f3" stroke="#1565c0" strokeWidth="1.5" />
+      <circle cx="21" cy="19" r="2.2" fill="#fff" />
+      <circle cx="21.7" cy="19" r="1.1" fill="#222" />
+      <polygon points="29,18 27,17 27,19" fill="#ffb300" />
+    </svg>
+  );
+}
+
 export default function FlappyBirdGame() {
   const [birdY, setBirdY] = useState(GAME_HEIGHT / 2);
   const [velocity, setVelocity] = useState(0);
@@ -102,12 +115,11 @@ export default function FlappyBirdGame() {
           top: birdY,
           width: BIRD_SIZE,
           height: BIRD_SIZE,
-          background: "#2196f3",
-          borderRadius: "50%",
-          border: "3px solid #1565c0",
-          boxShadow: "0 2px 8px #1565c0",
+          pointerEvents: 'none',
         }}
-      />
+      >
+        <BlueBird />
+      </div>
       {/* Tubes */}
       {tubes.map((tube, i) => (
         <React.Fragment key={i}>
